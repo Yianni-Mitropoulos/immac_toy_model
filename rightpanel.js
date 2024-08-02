@@ -244,14 +244,3 @@ function isCursorInLeadingWhitespace(textArea) {
 
     return /^\s*$/.test(leadingWhitespace);
 }
-
-function toggleDirectory(event) {
-    event.stopPropagation();
-    const directory = event.currentTarget;
-    directory.classList.toggle('expanded');
-}
-
-function handleClick(event, fileName) {
-    event.stopPropagation();
-    console.log(fileName);
-}

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Two Panel Layout</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="left-panel">
+        <div class="directory" onclick="toggleDirectory(event)">
+            <span class="directory-name">Folder 1</span>
+            <div class="sub-directory" onclick="handleClick(event, 'File 1.1')">File 1.1</div>
+            <div class="sub-directory" onclick="handleClick(event, 'File 1.2')">File 1.2</div>
+        </div>
+        <div class="directory" onclick="toggleDirectory(event)">
+            <span class="directory-name">Folder 2</span>
+            <div class="sub-directory" onclick="handleClick(event, 'File 2.1')">File 2.1</div>
+        </div>
+        <div class="directory" onclick="toggleDirectory(event)">
+            <span class="directory-name">Folder 3</span>
+            <div class="sub-directory" onclick="handleClick(event, 'File 3.1')">File 3.1</div>
+            <div class="sub-directory" onclick="handleClick(event, 'File 3.2')">File 3.2</div>
+            <div class="sub-directory" onclick="handleClick(event, 'File 3.3')">File 3.3</div>
+        </div>
+    </div>
+    <div id="right-panel">
+        <div id="highlight-layer"></div>
+        <textarea id="file-content" spellcheck="false"></textarea>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

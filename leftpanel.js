@@ -39,78 +39,86 @@ class AnonymousDirectory {
 
 let root_dir = new AnonymousDirectory();
 
+// Update Left Panel: Main function to update the directory structure display
 function updateLeftPanel(directory = root_dir, container = document.getElementById('left-panel')) {
-    container.innerHTML = ''; // Clear the container to start fresh
 
-    // Recursively create directory and file elements
+    // Clear the container to ensure a fresh start
+    container.innerHTML = '';
+
+    // Recursive Function: Create HTML structure for directories and files
     function createDirectoryHtml(currentDirectory, depth = 0) {
         const directoryContainer = document.createElement('div');
 
-        // Handle subdirectories
+        // Process Subdirectories
         Object.entries(currentDirectory.directories).forEach(([dirName, dirObj]) => {
             const folderDiv = document.createElement('div');
             folderDiv.className = 'directory-name';
-            folderDiv.style.paddingLeft = `${20 * depth}px`; // Indent based on depth
+            folderDiv.style.paddingLeft = `${20 * depth}px`;
 
+            // Setup Folder Label and Inline Values
             const folderLabel = document.createElement('span');
             folderLabel.textContent = dirName;
-
             const folderValues = document.createElement('span');
-            // Display values inline only when there are no child directories or files
             folderValues.textContent = ` (${dirObj.values.join(', ')})`;
-            folderValues.style.display = 'inline'; // Show inline by default
+            folderValues.style.display = 'inline';  // Inline values are visible by default
 
             folderDiv.appendChild(folderLabel);
             folderDiv.appendChild(folderValues);
 
-            // Children container for this folder
+            // Children Container: holds subdirectories and files
             const childrenContainer = document.createElement('div');
-            childrenContainer.style.display = 'none'; // Start hidden
+            childrenContainer.style.display = 'none';
 
+            // Event Listener: Toggle visibility of children and inline values
             folderDiv.addEventListener('click', (event) => {
                 event.stopPropagation();
-                if (childrenContainer.style.display === 'none') {
-                    childrenContainer.style.display = 'block'; // Show children
-                    folderValues.style.display = 'none'; // Hide inline values
-                } else {
-                    childrenContainer.style.display = 'none'; // Hide children
-                    folderValues.style.display = 'inline'; // Show inline values
-                }
+                const isHidden = childrenContainer.style.display === 'none';
+                childrenContainer.style.display = isHidden ? 'block' : 'none';
+                folderValues.style.display = isHidden ? 'none' : 'inline';
             });
 
-            // Append the folder and its children container
+            // Recursive Call: Append nested directories and files
+            childrenContainer.appendChild(createDirectoryHtml(dirObj, depth + 1));
+
+            // Append folder and its children to the directory container
             directoryContainer.appendChild(folderDiv);
             directoryContainer.appendChild(childrenContainer);
 
-            // Recursive call to append nested directories and files
-            childrenContainer.appendChild(createDirectoryHtml(dirObj, depth + 1));
         });
 
-        // Handle files in this directory
+        // Process Files in Current Directory
         currentDirectory.values.forEach(value => {
             const fileDiv = document.createElement('div');
             fileDiv.className = 'sub-directory';
             fileDiv.textContent = value;
-            fileDiv.style.paddingLeft = `${20 * (depth + 1)}px`; // Indent files more than folders
+            fileDiv.style.paddingLeft = `${20 * (depth + 1)}px`;
 
+            // Event Listener: Handle file selection
             fileDiv.addEventListener('click', (event) => {
-                event.stopPropagation();  // Prevent the directory toggle when clicking on a file
+                event.stopPropagation();
                 handleClick(event, value);
             });
 
+            // Append file to the directory container
             directoryContainer.appendChild(fileDiv);
+
         });
 
         return directoryContainer;
+
     }
 
-    // Start the recursive directory building from root
+    // Start building the directory structure from the root
     container.appendChild(createDirectoryHtml(directory, 0));
+
 }
 
+// Handle Click on File: Logs the selected file name
 function handleClick(event, fileName) {
-    event.stopPropagation(); // Stop further propagation
+
+    event.stopPropagation();
     console.log(`File selected: ${fileName}`);
+
 }
 
 document.addEventListener('DOMContentLoaded', () => {
